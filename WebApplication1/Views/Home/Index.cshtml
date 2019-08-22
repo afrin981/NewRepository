@@ -1,0 +1,109 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>    
+</head>
+<body>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js"></script>
+    <script type="text/javascript">
+        var app = angular.module('MyApp', [])
+        app.controller('MyController', function ($scope, $http, $window) {
+            $scope.CountCharacters = function () {
+                var post = $http({
+                    method: "POST",
+                    url: "/Home/CountofCharacters",
+                    dataType: 'json',
+                    data: { strArray: $scope.inputString },
+                    headers: { "Content-Type": "application/json" }
+                });
+
+                post.success(function (data, status) {
+                    $scope.returnValue = data;
+                });
+
+                post.error(function (data, status) {
+                    $window.alert(data.Message);
+                });
+            }          
+
+            $scope.ReverseWords = function () {
+                var post = $http({
+                    method: "POST",
+                    url: "/Home/ReverseString",
+                    dataType: 'json',
+                    data: { strInputString: $scope.inputString },
+                    headers: { "Content-Type": "application/json" }
+                });
+
+                post.success(function (data, status) {
+                    $scope.returnValue = data;
+                });
+
+                post.error(function (data, status) {
+                    $window.alert(data.Message);
+                });
+            }
+            $scope.ReverseStringWithoutSplit = function () {
+                var post = $http({
+                    method: "POST",
+                    url: "/Home/ReverseStringWithoutSplit",
+                    dataType: 'json',
+                    data: { strInputString: $scope.inputString },
+                    headers: { "Content-Type": "application/json" }
+                });
+
+                post.success(function (data, status) {
+                    $scope.returnValue = data;
+                });
+
+                post.error(function (data, status) {
+                    $window.alert(data.Message);
+                });
+            }
+           
+
+            $scope.exampleArray = ['test', 'test1', 'test2', 'test', 'test1', 'test2', 'test'];
+            $scope.result = [];
+            $scope.removeDuplicates = function () {
+                $scope.result = $scope.exampleArray.filter(function (item, pos) {
+                    return $scope.exampleArray.indexOf(item) == pos;
+                })
+            };
+        });
+      
+    </script>
+    <div ng-app="MyApp" ng-controller="MyController">
+        <p>
+            Input the array of string to get the count of characters:
+            <br />
+            <br />
+            <textarea ng-model="inputString" style="width:400px;"></textarea>
+            <br />
+        </p>
+        <p>
+            <button type="button" ng-click="CountCharacters()"> Count Characters </button>
+            <button type="button" ng-click="ReverseWords()"> Reverse String</button>
+            <button type="button" ng-click="ReverseStringWithoutSplit()"> Reverse String Without Split & Reverse</button>
+        </p>
+        <p>{{returnValue}}</p>
+        <br />
+        <p>
+            Array With Duplicate Values = {{exampleArray}}
+            <br />
+            <br />
+            <button ng-click="removeDuplicates()">Remove Duplicates Values</button>
+            <br />
+            <br />
+            Final Array = {{result}}<br />
+        </p>
+        <br />
+        <br />       
+    </div>
+</body>
+</html>
